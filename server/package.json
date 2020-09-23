@@ -1,0 +1,30 @@
+{
+    "name": "server",
+    "version": "3.0.0",
+    "homepage": "https://github.com/zachbryant/FluidExplorations",
+    "license": "MIT",
+    "scripts": {
+        "start": "nodemon --exec 'ts-node -r tsconfig-paths/register ./src/app.ts' -e ts,js,mjs,json --watch src",
+        "start:fluid": "tinylicious",
+        "build": "tsc",
+        "test": "react-scripts test",
+        "clean": "rm -rf node_modules"
+    },
+    "devDependencies": {
+        "tinylicious": "^0.2.3810",
+        "tsconfig-paths": "^3.9.0"
+    },
+    "dependencies": {
+        "@types/express": "^4.17.8",
+        "agendash": "^1.0.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "express-basic-auth": "^1.2.0",
+        "nodemailer": "^6.4.11",
+        "reflect-metadata": "^0.1.13",
+        "ts-node": "^9.0.0",
+        "typedi": "^0.8.0",
+        "typescript": "^4.0.3",
+        "winston": "^3.3.3"
+    }
+}

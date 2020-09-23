@@ -1,0 +1,53 @@
+{
+    "compilerOptions": {
+        "target": "es2020",
+        "lib": ["es2020"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "noImplicitReturns": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": false,
+        "newLine": "lf",
+        "baseUrl": "src",
+        "paths": {
+            "@config/*": ["config/*", "config/index"],
+            "@config": ["config/index"],
+            "@api/*": ["api/*", "api/index"],
+            "@api": ["api/index"],
+            "@jobs/*": ["jobs/*", "jobs/index"],
+            "@jobs": ["jobs/index"],
+            "@loaders/*": ["loaders/*", "loaders/index"],
+            "@loaders": ["loaders/index"],
+            "@models/*": ["models/*", "models/index"],
+            "@models": ["models/index"],
+            "@services/*": ["services/*", "services/index"],
+            "@services": ["services/index"],
+            "@subscribers/*": ["subscribers/*", "subscribers/index"],
+            "@subscribers": ["subscribers/index"],
+            "@types/*": ["types/*", "types/index"],
+            "@types": ["types/index"],
+            "@utils/*": ["utils/*", "utils/index"],
+            "@utils": ["utils/index"],
+            "@/*": ["./*"],
+            "~/*": ["../*"]
+        }
+    },
+    "include": ["src"],
+    "exclude": [
+        "lib",
+        "build",
+        "node_modules",
+        "scripts",
+        "webpack",
+        "jest",
+        "tests",
+        "templates"
+    ]
+}

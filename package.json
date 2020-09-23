@@ -1,0 +1,21 @@
+{
+    "name": "react-express-starter",
+    "version": "3.0.0",
+    "main": "index.js",
+    "homepage": "https://github.com/zachbryant/FluidExplorations",
+    "license": "MIT",
+    "scripts": {
+        "start": "concurrently \"npm:start:server\" \"npm:start:client\"",
+        "clean": "concurrently \"npm:clean:main\" \"npm:clean:server\" \"npm:clean:client\"",
+        "start:client": "cd client && npm run start",
+        "start:server": "cd server && npm run start",
+        "clean:client": "cd client && npm run clean",
+        "clean:server": "cd server && npm run clean",
+        "clean:main": "rm -rf node_modules"
+    },
+    "devDependencies": {
+        "@types/node": "^14.10.1",
+        "concurrently": "^5.3.0"
+    },
+    "dependencies": {}
+}

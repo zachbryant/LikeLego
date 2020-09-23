@@ -1,0 +1,7 @@
+lib
+dist
+node_modules
+CHANGELOG.*
+README.*
+package.json
+*.scss.d.ts

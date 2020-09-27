@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 export const App = () => (
     <div className="flex-col max-w-md p-6 mx-auto bg-white rounded-lg shadow-xl">

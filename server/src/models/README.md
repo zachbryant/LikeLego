@@ -1,0 +1,1 @@
+Data models and classes ex for database schemas or interfaces that live in many components. Queries are executed here.

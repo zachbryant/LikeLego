@@ -6,6 +6,7 @@
         "skipLibCheck": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
+        "noImplicitAny": false,
         "noImplicitReturns": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
@@ -37,7 +38,9 @@
             "@utils": ["utils/index"],
             "@/*": ["./*"],
             "~/*": ["../*"]
-        }
+        },
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true
     },
     "include": ["src"],
     "exclude": [

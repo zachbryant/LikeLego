@@ -1078,6 +1078,11 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
+configuration-processor@~1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/configuration-processor/-/configuration-processor-1.1.1.tgz#f2189085b259d8cd9e5e7c2acbaec5c7f16205a2"
+  integrity sha1-8hiQhbJZ2M2eXnwqy67Fx/FiBaI=
+
 console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
@@ -1176,6 +1181,13 @@ dashdash@^1.12.0:
   integrity sha1-hTz6D3y+L+1d4gMmuN1YEDX24vA=
   dependencies:
     assert-plus "^1.0.0"
+
+data-container@~1:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/data-container/-/data-container-1.1.0.tgz#fe7720f457eb3eba8f408973c1b684c135cf88ac"
+  integrity sha1-/ncg9FfrPrqPQIlzwbaEwTXPiKw=
+  dependencies:
+    configuration-processor "~1"
 
 date.js@~0.3.3:
   version "0.3.3"
@@ -1463,6 +1475,14 @@ etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
+
+event-dispatcher@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/event-dispatcher/-/event-dispatcher-2.4.0.tgz#8b8bead84516ce1766415fab9329056e853d152a"
+  integrity sha1-i4vq2EUWzhdmQV+rkykFboU9FSo=
+  dependencies:
+    configuration-processor "~1"
+    data-container "~1"
 
 events@^3.1.0:
   version "3.2.0"

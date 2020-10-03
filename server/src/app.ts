@@ -8,6 +8,7 @@ const modeTag = isDevelopment ? 'DEVELOPMENT' : 'PRODUCTION';
 
 async function start() {
     process.on('unhandledRejection', (error) => {
+        w;
         log.error('Unhandled promise rejection:', error);
     });
 

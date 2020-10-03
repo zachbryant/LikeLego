@@ -3,6 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import winston from 'winston';
 
+import { ensureStartSlash } from '@utils/';
+
 const envFound = dotenv.config();
 if (envFound.error) {
     throw new Error("⚠️  Couldn't find .env file  ⚠️");
@@ -41,6 +43,10 @@ export const agenda = {
 export const agendash = {
     user: process.env.AGENDA_USER,
     pass: process.env.AGENDA_PASS,
+};
+
+export const api = {
+    prefix: ensureStartSlash(process.env.API_PREFIX || '/api'),
 };
 
 export const isDevelopment = process.env.NODE_ENV || 'development';

@@ -1,7 +1,8 @@
 import { Router } from 'express';
+
 import agendash from './routes/agendash';
 
-export default () => {
+export const API = () => {
     const app = Router();
     agendash(app);
 

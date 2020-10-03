@@ -32,6 +32,8 @@
             "@services": ["services/index"],
             "@subscribers/*": ["subscribers/*", "subscribers/index"],
             "@subscribers": ["subscribers/index"],
+            "@strings/*": ["strings/*", "strings/index"],
+            "@strings": ["strings/index"],
             "@types/*": ["types/*", "types/index"],
             "@types": ["types/index"],
             "@utils/*": ["utils/*", "utils/index"],

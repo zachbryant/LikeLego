@@ -1,7 +1,6 @@
-import path from 'path';
 import winston from 'winston';
 
-import { isDevelopment } from '@config';
+import { isDevelopment, log as logConfig } from '@config';
 
 const DailyRotateFile = require('winston-daily-rotate-file');
 
@@ -19,9 +18,7 @@ const format = (() => {
     } else {
         formats = formats.concat([winston.format.cli()]);
     }
-    return {
-        format: winston.format.combine(...formats),
-    };
+    return winston.format.combine(...formats);
 })();
 
 const dailyRotateFileTransport = (filename: string, level?: string) =>
@@ -33,14 +30,16 @@ const dailyRotateFileTransport = (filename: string, level?: string) =>
         datePattern: 'YYYY-MM-DD',
         level,
     });
-
 const transports: winston.transport[] = [
     dailyRotateFileTransport('combined', 'info'),
     dailyRotateFileTransport('error', 'error'),
-    new winston.transports.Console(format),
+    new winston.transports.Console({
+        level: logConfig.level,
+        format,
+    }),
 ];
 
 export const log = winston.createLogger({
-    levels: winston.config.syslog.levels,
+    levels: winston.config.npm.levels,
     transports,
 });

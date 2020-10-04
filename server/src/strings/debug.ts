@@ -5,5 +5,6 @@ export const initRoutes = 'Loading routes';
 export const initRoutesFailed = 'Failed to load routes';
 export const doneInitRoutes = 'Finished loading routes';
 export const initAllLoaders = 'Initializing loaders';
+export const initAllLoadersFailed = 'Failed to load all loaders';
 export const doneAllLoaders = 'All loaders loaded';
 export const errorGeneric = 'An error occurred';

@@ -1,9 +1,8 @@
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-import winston from 'winston';
 
-import { ensureStartSlash } from '@utils/';
+import { boolValue, ensureStartSlash } from '@utils';
 
 const envFound = dotenv.config();
 if (envFound.error) {
@@ -52,3 +51,13 @@ export const api = {
 export const isDevelopment = process.env.NODE_ENV || 'development';
 export const host = process.env.HOST || 'localhost';
 export const port = process.env.PORT || 8080;
+
+export const hasCompression = boolValue(process.env.COMPRESSION);
+export const hasCors = boolValue(process.env.CORS);
+export const enableHttp = boolValue(process.env.HTTP);
+
+export const log = {
+    level: isDevelopment
+        ? process.env.LOG_LEVEL_DEV
+        : process.env.LOG_LEVEL_PROD,
+};

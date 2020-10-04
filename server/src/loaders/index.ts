@@ -1,11 +1,14 @@
 import express from 'express';
 
+import { AbstractLoader } from '@interfaces/loader';
 import { log } from '@loaders/logger';
-import { AbstractLoader } from '@models/interfaces/loaderInterface';
 import { debugStrings } from '@strings/';
 
-import { ExpressLoader } from './express';
+import { ExpressLoader } from './server';
 
+/**
+ * This is the main loader, which loads all other loaders in specified order.
+ */
 export class AppLoader extends AbstractLoader<void | any> {
     private app: express.Application = express();
     private loaders;
@@ -15,16 +18,17 @@ export class AppLoader extends AbstractLoader<void | any> {
         this.loaders = [new ExpressLoader(this.app)];
     }
 
-    init(): Promise<void | any> {
-        log.debug(debugStrings.initAllLoaders);
-        return new Promise((resolve, reject) => {
-            for (let loader of this.loaders) {
-                loader.init().catch((onRejected) => {
-                    reject(onRejected);
-                });
-            }
-            log.debug(debugStrings.doneAllLoaders);
-            resolve(this.app);
-        });
+    load(): Promise<void | any> {
+        log.info(debugStrings.initAllLoaders);
+
+        const loaderPromises = this.loaders.map((loader) => loader.start());
+
+        return Promise.all(loaderPromises)
+            .then(() => {
+                log.info(debugStrings.doneAllLoaders);
+            })
+            .catch((onRejected) => {
+                return Promise.reject(onRejected);
+            });
     }
 }

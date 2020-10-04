@@ -3,6 +3,7 @@
     "version": "3.0.0",
     "homepage": "https://github.com/zachbryant/FluidExplorations",
     "license": "MIT",
+    "type": "module",
     "scripts": {
         "start": "nodemon --exec 'ts-node -r tsconfig-paths/register ./src/app.ts' -e ts,js,mjs,json,pem --watch src",
         "start:fluid": "tinylicious",
@@ -20,6 +21,7 @@
         "body-parser": "^1.19.0",
         "cors": "^2.8.5",
         "dotenv": "^8.2.0",
+        "dotenv-parse-variables": "^1.0.1",
         "event-dispatcher": "^2.4.0",
         "express": "^4.17.1",
         "express-basic-auth": "^1.2.0",

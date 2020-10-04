@@ -36,6 +36,7 @@ This starter notably comes with `typescript`, `recoil`, `tailwindcss`, `react-ro
 
 
 ### TODO
+ - generate tsconfig.json
  - jobs
  - decorators
  - services

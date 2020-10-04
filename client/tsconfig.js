@@ -1,4 +1,27 @@
-module.exports = {
+const fs = require( 'fs' );
+
+const baseUrl = 'src';
+
+// Import aliases like `import("@Public/img/myasset.png")`
+function generateIntellisensePaths() {
+    const paths = {
+        '@/*': ['./*'],
+        '~/*': ['../*'],
+    };
+
+    const dir = await fs.promises.opendir( baseUrl );
+    for await ( const dirent of dir ) {
+        if ( dirent.isDirectory ) {
+            let name = dirent.name;
+            paths[`@${name}/*`] = `${name}/*`
+            paths[`@${name}/`] = `${name}/index`
+            paths[`@${name}`] = `${name}/index`
+        }
+    }
+    return paths;
+}
+
+const exports = {
     compilerOptions: {
         target: 'es2020',
         lib: ['dom', 'dom.iterable', 'esnext'],
@@ -16,26 +39,8 @@ module.exports = {
         noEmit: false,
         jsx: 'react',
         newLine: 'lf',
-        baseUrl: 'src',
-        paths: {
-            // Import aliases like `import("@Public/img/myasset.png")`
-            '@assets/*': ['assets/*', 'assets/index'],
-            '@assets': ['assets/index'],
-            '@components/*': ['components/*', 'components/index'],
-            '@components': ['components/index'],
-            '@layouts/*': ['layouts/*', 'layouts/index'],
-            '@layouts': ['layouts/index'],
-            '@models/*': ['models/*', 'models/index'],
-            '@models': ['models/index'],
-            '@pages/*': ['pages/*', 'pages/index'],
-            '@pages': ['pages/index'],
-            '@public/*': ['../public/*', 'public/index'],
-            '@public': ['../public/index'],
-            '@utils/*': ['utils/*', 'utils/index'],
-            '@utils': ['utils/index'],
-            '@/*': ['./*'],
-            '~/*': ['../*'],
-        },
+        baseUrl,
+        paths: generateIntellisensePaths(),
     },
     include: ['src'],
     exclude: [
@@ -49,3 +54,5 @@ module.exports = {
         'templates',
     ],
 };
+
+module.exports = exports;

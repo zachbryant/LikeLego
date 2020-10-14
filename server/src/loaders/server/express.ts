@@ -1,12 +1,12 @@
-import { rejects } from 'assert';
-import * as express from 'express';
+import express from 'express';
+import Container from 'typedi';
 
 import { API } from '@api';
 import { api as configApi, hasCompression, hasCors, isDevelopment } from '@config';
 import { AbstractLoader } from '@interfaces/loader';
-import { debugStrings, strings } from '@strings';
-
-import { log } from './logger';
+import { logStrings, strings } from '@strings';
+import { modeTagDIKey, serverAppDIKey } from '@strings/keys';
+import { getDependency } from '@utils/';
 
 const cors = require('cors');
 const helmet = require('helmet');
@@ -20,37 +20,31 @@ const compression = require('compression');
  * It requires an express application instance, and returns a promise.
  * When resolved, the promise makes the app instance available again.
  */
-export class ExpressLoader extends AbstractLoader {
-    private app;
+export class ExpressLoader extends AbstractLoader<express.Application> {
     private allowedOrigins = [
         process.env.HOST,
         `https://localhost:${process.env.SSL_PORT}`,
     ];
+    private app;
 
-    constructor(app: express.Application) {
-        super();
-        this.app = app;
+    constructor(loadAsync = true) {
+        super(loadAsync);
+        this.app = express();
     }
 
-    load() {
-        return Promise.all([this.loadMiddlewares, this.loadRoutes]).then(() =>
-            this.done(),
-        );
+    async load() {
+        Container.set(serverAppDIKey, this.app);
+        this.loadMiddlewares();
+        this.loadRoutes();
+        this.done();
+        return this.app;
     }
 
     // Load all specified middlewares
     loadMiddlewares() {
-        log.debug(debugStrings.initMiddleware);
-
-        return new Promise<void>((resolve) => {
-            this.getMiddlewares().forEach((mw) => this.app.use(mw));
-            resolve();
-        })
-            .then(() => log.debug(debugStrings.doneInitMiddleware))
-            .catch((err) => {
-                log.error(debugStrings.initMiddlewareFailed);
-                rejects(err);
-            });
+        this.log.debug(logStrings.initMiddleware);
+        this.getMiddlewares().forEach((mw) => this.app.use(mw));
+        this.log.debug(logStrings.doneInitMiddleware);
     }
 
     getMiddlewares() {
@@ -72,16 +66,9 @@ export class ExpressLoader extends AbstractLoader {
 
     // Load our API and app routes using the API prefix
     loadRoutes() {
-        log.debug(debugStrings.initRoutes);
-        return new Promise<void>((resolve) => {
-            this.app.use(configApi.prefix, API());
-            resolve();
-        })
-            .then(() => log.debug(debugStrings.doneInitRoutes))
-            .catch((err) => {
-                log.error(debugStrings.initRoutesFailed);
-                throw err;
-            });
+        this.log.debug(logStrings.initRoutes);
+        this.app.use(configApi.prefix, API());
+        this.log.debug(logStrings.doneInitRoutes);
     }
 
     // Ensure the origin is in the allowlist, otherwise deny

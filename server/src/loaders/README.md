@@ -1,1 +1,1 @@
-Split the startup process into modules.
+Split the startup process into modules. All of the initialization and wiring-up should be done here.

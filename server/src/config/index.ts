@@ -49,12 +49,17 @@ export const api = {
 };
 
 export const isDevelopment = process.env.NODE_ENV || 'development';
+export const modeTag = isDevelopment ? 'DEVELOPMENT' : 'PRODUCTION';
+
 export const host = process.env.HOST || 'localhost';
-export const port = process.env.PORT || 8080;
+export const httpPort = process.env.PORT || 8080;
 
 export const hasCompression = boolValue(process.env.COMPRESSION);
 export const hasCors = boolValue(process.env.CORS);
-export const enableHttp = boolValue(process.env.HTTP);
+export const enableHTTP = boolValue(process.env.HTTP);
+export const enableSSL = Object.values(ssl).every(
+    (val) => val !== undefined && val !== null,
+);
 
 export const log = {
     level: isDevelopment

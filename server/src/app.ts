@@ -1,42 +1,45 @@
 import 'reflect-metadata'; // before any other dependency
 
-import { enableHttp, isDevelopment, ssl } from '@config';
-import { AppLoader } from '@loaders';
-import { log } from '@loaders/logger';
-
-const modeTag = isDevelopment ? 'DEVELOPMENT' : 'PRODUCTION';
+import { enableHTTP, enableSSL, modeTag } from '@config';
+import { AbstractLoader } from '@interfaces/loader';
+import { DependencyInjectorLoaders, ServerLoaders } from '@loaders/';
+import { AppLoader } from '@loaders/app';
+import { emitter } from '@loaders/events';
+import { winston as log } from '@loaders/logger';
+import { eventsDIKey, loggerDIKey, modeTagDIKey } from '@strings/keys';
 
 async function start() {
     process.on('unhandledRejection', (error) => {
         log.error('Unhandled promise rejection:', error);
+        console.error(error);
     });
+    process.on('warning', (e) => log.warn(e.stack));
 
-    new AppLoader()
+    new AppLoader([
+        new DependencyInjectorLoaders.TypeDILoader(
+            [
+                { key: eventsDIKey, value: emitter },
+                { key: loggerDIKey, value: log },
+            ],
+            false,
+        ),
+        new ServerLoaders.ExpressLoader(false),
+        ...getHttpSSLServers(),
+    ])
         .load()
-        .catch((reject) => {
-            log.error(reject);
+        .then((results) => {
+            // TODO something with results?
         })
-        .then((app) => {
-            listen(app);
+        .catch((err) => {
+            log.error(`App loader failed: \n\n${err.stack}`);
         });
 }
 
-function listen(app: Express.Application) {
-    if (enableHttp) {
-        const http = require('http');
-        const port = process.env.PORT;
-        let httpServer = http.createServer(app);
-        httpServer.listen(port);
-        log.info(`[${modeTag}] HTTP is available on port ${port}`);
-    }
-
-    const https = require('https');
-    const credentials = ssl.credentials;
-    if (credentials.key && credentials.cert) {
-        let httpsServer = https.createServer(ssl.credentials, app);
-        httpsServer.listen(ssl.port);
-        log.info(`[${modeTag}] SSL is available on port ${ssl.port}`);
-    }
+function getHttpSSLServers() {
+    const servers: AbstractLoader<void | any>[] = [];
+    if (enableHTTP) servers.push(new ServerLoaders.HttpLoader());
+    if (enableSSL) servers.push(new ServerLoaders.SslLoader());
+    return servers;
 }
 
 start();

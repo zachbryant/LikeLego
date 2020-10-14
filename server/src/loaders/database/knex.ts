@@ -1,6 +1,10 @@
 import { AbstractLoader } from '@interfaces/loader';
 
-export class DatabaseLoader extends AbstractLoader<void> {
+export class KnexLoader extends AbstractLoader<void> {
+    constructor() {
+        super();
+    }
+
     load(): Promise<void> {
         throw new Error('Method not implemented.');
         this.done();

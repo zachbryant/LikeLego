@@ -23,11 +23,11 @@ const formatList = (() => {
 
 const consoleFormat = winstonLib.format.printf((info) => {
     const date = new Date();
-    const hour = date.getUTCHours();
-    const min = date.getUTCMinutes();
-    const sec = date.getUTCSeconds();
-    const ms = date.getUTCMilliseconds();
-    return `[${hour}:${min}:${sec}-${ms}] [${info.level.toUpperCase()}] ${
+    const hour = date.getUTCHours().toString().padStart(2, '0');
+    const min = date.getUTCMinutes().toString().padStart(2, '0');
+    const sec = date.getUTCSeconds().toString().padStart(2, '0');
+    const ms = date.getUTCMilliseconds().toString().padStart(3, '0');
+    return `[${hour}:${min}:${sec}:${ms}] [${info.level.toUpperCase()}] ${
         info.message
     }`;
 });

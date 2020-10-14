@@ -5,8 +5,7 @@ import { API } from '@api';
 import { api as configApi, hasCompression, hasCors, isDevelopment } from '@config';
 import { AbstractLoader } from '@interfaces/loader';
 import { logStrings, strings } from '@strings';
-import { modeTagDIKey, serverAppDIKey } from '@strings/keys';
-import { getDependency } from '@utils/';
+import { serverAppDIKey } from '@strings/keys';
 
 const cors = require('cors');
 const helmet = require('helmet');
@@ -75,9 +74,10 @@ export class ExpressLoader extends AbstractLoader<express.Application> {
     corsOriginCheck(origin, callback) {
         // allow requests with no origin
         // (like mobile apps or curl requests)
+        // TODO translate
         if (!origin) return callback(null, true);
         if (this.allowedOrigins.indexOf(origin) === -1) {
-            return callback(new Error(strings.corsPolicy), false);
+            return callback(new Error(strings.en.corsPolicy), false);
         }
         return callback(null, true);
     }

@@ -1,12 +1,12 @@
 import 'reflect-metadata'; // before any other dependency
 
-import { enableHTTP, enableSSL, modeTag } from '@config';
+import { enableHTTP, enableSSL } from '@config';
 import { AbstractLoader } from '@interfaces/loader';
 import { DependencyInjectorLoaders, ServerLoaders } from '@loaders/';
 import { AppLoader } from '@loaders/app';
 import { emitter } from '@loaders/events';
 import { winston as log } from '@loaders/logger';
-import { eventsDIKey, loggerDIKey, modeTagDIKey } from '@strings/keys';
+import { eventsDIKey, loggerDIKey } from '@strings/keys';
 
 async function start() {
     process.on('unhandledRejection', (error) => {

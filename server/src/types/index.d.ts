@@ -9,4 +9,7 @@ declare global {
         export type UserModel = Model<Iuser & Document>
     }
     */
+
+    namespace misc {}
 }
+declare type VoidAny = void | any;

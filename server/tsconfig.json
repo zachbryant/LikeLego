@@ -15,6 +15,11 @@
         "noEmit": false,
         "newLine": "lf",
         "baseUrl": "src",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "strictPropertyInitialization": false,
         "paths": {
             "@config/*": ["config/*"],
             "@config/": ["config/"],
@@ -55,10 +60,7 @@
             "@/*": ["./*"],
             "~/*": ["../*"]
         },
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
-        "forceConsistentCasingInFileNames": true
+        "typeRoots": ["./node_modules/@types", "./src/types"]
     },
     "include": ["src"],
     "exclude": [

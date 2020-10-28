@@ -40,9 +40,10 @@ Some loaders do not follow the `AbstractLoader` pattern. The logger for example 
 ### Subscribers
 
 ### Types
+For convenience during development, `injectionAliases.ts` is where the proper types corresponding to the active loaders are maintained. This has to be done manually, though, or you can just use `Any` for dependencies.
 
 ### Miscellaneous
- - `@folder` import intellisense: edit the paths in tsconfig.json
+ - `@folder` import intellisense: edit the paths in tsconfig.json, and `@types` is reserved.
 
 
 ### TODO

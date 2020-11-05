@@ -1,7 +1,6 @@
-import express from 'express';
-import Container from 'typedi';
+import express, { Router } from 'express';
 
-import { API } from '@api';
+import { Routes as ApiRoutes } from '@api';
 import { api as configApi, hasCompression, hasCors, isDevelopment } from '@config';
 import { AbstractLoader } from '@interfaces/loader';
 import { logStrings, strings } from '@strings';
@@ -41,7 +40,6 @@ export class ExpressLoader extends AbstractLoader<express.Application> {
         setDependency(serverRouterDIKey, this.router);
         this.loadMiddlewares();
         this.loadRoutes();
-        this.done();
         return this.app;
     }
 
@@ -70,9 +68,12 @@ export class ExpressLoader extends AbstractLoader<express.Application> {
     }
 
     // Load our API and app routes using the API prefix
-    loadRoutes() {
+    async loadRoutes() {
         this.log.debug(logStrings.initRoutes);
-        this.app.use(configApi.prefix, API());
+        for (const routeBuilderFunc of ApiRoutes) {
+            routeBuilderFunc(this.router);
+        }
+        this.app.use(configApi.prefix, this.router);
         this.log.debug(logStrings.doneInitRoutes);
     }
 
@@ -83,7 +84,7 @@ export class ExpressLoader extends AbstractLoader<express.Application> {
         // TODO translate
         if (!origin) return callback(null, true);
         if (this.allowedOrigins.indexOf(origin) === -1) {
-            return callback(new Error(strings.en.corsPolicy), false);
+            return callback(new Error(strings.EN.corsPolicy), false);
         }
         return callback(null, true);
     }

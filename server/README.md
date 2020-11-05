@@ -21,21 +21,29 @@ The best way to store secrets is with the `.env` file. It should never be commit
 
 ### Decorators
 
+### Events
+Events tie together the loaders and services through the subscribers. A subscriber notifies the service when its event has been emitted, and forwards data to be used in the business logic. A subscriber may digest some data for the service. 
+
+This part of the architecture is useful for handling requests that don't need fancy persistence or priorities, like authentication.
+
 ### Jobs and Tasks
-Instead of relying on `setTimeout` et al, persistent tasks and jobs are available with `agenda`/`agendash`
+Feature rich job libs are available (bull, agenda, etc) for use. One would use this for events that can happen asynchronously without a user waiting on the other end, such as sending welcome emails.
 
 ### Loaders
-Loaders are how we separate concerns and modularize the major components of a project. It's where all the wiring for a particular library/module is done
+Loaders are how we separate concerns and modularize the major components of a project. It's where all the wiring for a particular library/module is done.
 
 Some loaders do not follow the `AbstractLoader` pattern. The logger for example needs to be available before the loading process has even begun. For this reason, the song and dance of loading and awaiting is unnecessary.
 
 ### Logs
+You can customize the logs by checking out the logger loaders and `.env`. 
 
 ### Models
 
 ### Services
 
+
 ### Strings
+The strings folder structure intends to make translation scalable, and to bring out as many hardcoded strings as possible.
 
 ### Subscribers
 
@@ -45,17 +53,19 @@ For convenience during development, `injectionAliases.ts` is where the proper ty
 ### Miscellaneous
  - `@folder` import intellisense: edit the paths in tsconfig.json, and `@types` is reserved.
 
+### Install
+ - Mongodb
+
 
 ### TODO
  - generate tsconfig.json
  - jobs
- - decorators
  - services
  - subscribers
  - types
  - testing
  - Admin dashboard
-  - status monitor (cpu, ram, load avg, resp time, rq per sec, status code graph, failed requests, highlighted log output)
+  - status monitor (cpu, ram, load avg, resp time, rq per sec, status code graph, failed requests, highlighted log output, disable events)
  - packages
   - fakerjs
   - jest/mocha
@@ -66,11 +76,7 @@ For convenience during development, `injectionAliases.ts` is where the proper ty
   - node-cron
   - bull
   - agenda
-  - axios
-  - got
-  - fetch
   - mailgun/nodemailer/emailjs
-  - typedi
   - knex/sequelize/mongoose
   - commanderjs
   - upash

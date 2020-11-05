@@ -4,5 +4,5 @@ export * as keys from './keys';
 import * as EN from './en';
 
 export const strings = {
-    en: EN,
+    EN,
 };

@@ -5,7 +5,7 @@ export class HapiLoader extends AbstractLoader<void> {
         super();
     }
 
-    load(): Promise<void> {
+    async load() {
         throw new Error('Method not implemented.');
         this.done();
     }

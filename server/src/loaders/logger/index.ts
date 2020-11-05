@@ -1,5 +1,7 @@
-export * from './winston';
 export * from './logging-library';
 export * from './pino';
+export * from './winston';
 
-export default import('./winston');
+import { winston } from './winston';
+
+export default winston;

@@ -1,12 +1,15 @@
 import agendash from 'agendash';
 import { Router } from 'express';
 import basicAuth from 'express-basic-auth';
-import { Container } from 'typedi';
+
+import { RouteBuilderFunction } from '@interfaces/route';
+import { jobHandlerDIKey } from '@strings/keys';
+import { getDependency } from '@utils/';
 
 import { agendash as agendashConfig } from '../../config';
 
-export default (app: Router) => {
-    const agendaInstance = Container.get('agendaInstance');
+export const agendashRoute: RouteBuilderFunction = (app: Router) => {
+    const agendaInstance = getDependency(jobHandlerDIKey);
 
     const { user, pass } = agendashConfig;
     if (user && pass) {

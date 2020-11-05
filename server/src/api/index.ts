@@ -1,15 +1,8 @@
-import { Router } from 'express';
-import Container from 'typedi';
+import * as CustomMiddlewares from '@api/middlewares/';
+import * as RouteObjects from '@api/routes';
+import { RouteBuilderFunction } from '@interfaces/route';
+import { toArray } from '@utils/';
 
-import { loggerDIKey } from '@strings/keys';
-
-//import agendash from './routes/agendash';
-
-export const API = () => {
-    const log: any = Container.get(loggerDIKey);
-    log.debug('Loading API');
-    const app = Router();
-    //agendash(app);
-
-    return app;
-};
+// Leaving these as lists because I don't see the benefit of obj.
+export const Routes: RouteBuilderFunction[] = toArray(RouteObjects);
+export const Middlewares = toArray(CustomMiddlewares);

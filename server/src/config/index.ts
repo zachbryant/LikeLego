@@ -34,8 +34,9 @@ export const ssl = {
 };
 
 export const agenda = {
-    concurrency: process.env.AGENDA_CONCURRENCY,
+    concurrency: Number(process.env.AGENDA_CONCURRENCY),
     poolTime: process.env.AGENDA_POOL_TIME,
+    dbUrl: process.env.AGENDA_MONGO_URL,
     dbCollection: process.env.AGENDA_DB_COLLECTION,
 };
 
@@ -48,7 +49,7 @@ export const api = {
     prefix: ensureStartSlash(process.env.API_PREFIX || '/api'),
 };
 
-export const isDevelopment = process.env.NODE_ENV || 'development';
+export const isDevelopment = process.env.NODE_ENV || true;
 export const modeTag = isDevelopment ? 'DEVELOPMENT' : 'PRODUCTION';
 
 export const host = process.env.HOST || 'localhost';
@@ -65,4 +66,5 @@ export const log = {
     level: isDevelopment
         ? process.env.LOG_LEVEL_DEV
         : process.env.LOG_LEVEL_PROD,
+    dir: process.env.LOG_PATH || 'logs',
 };

@@ -26,8 +26,8 @@ export class ExpressLoader extends AbstractLoader<express.Application> {
     ];
     private app;
 
-    constructor(loadAsync = true) {
-        super(loadAsync);
+    constructor() {
+        super();
         this.app = express();
     }
 

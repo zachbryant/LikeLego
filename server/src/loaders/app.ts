@@ -1,14 +1,16 @@
 import { modeTag } from '@config/';
 import { AbstractLoader } from '@interfaces/loader';
-import { winston as log } from '@loaders/logger/winston';
 import { logStrings } from '@strings/';
+import { appLoadWelcome } from '@strings/logging';
+
+type VoidAny = void | any;
 
 /**
+ * @deprecated
  * This is the main loader, which loads all other loaders.
  * Loaders marked synchronous will be loaded as such, and others
  * will be loaded concurrently.
  */
-type VoidAny = void | any;
 export class AppLoader extends AbstractLoader<VoidAny> {
     private asyncLoaders;
     private syncLoaders;
@@ -16,13 +18,14 @@ export class AppLoader extends AbstractLoader<VoidAny> {
     constructor(loaders: AbstractLoader<VoidAny>[]) {
         super();
         loaders = loaders.filter(Boolean);
-        this.syncLoaders = loaders.filter((l) => !l.loadAsync);
-        this.asyncLoaders = loaders.filter((l) => l.loadAsync);
+        //this.syncLoaders = loaders.filter((l) => !l.loadAsync);
+        //this.asyncLoaders = loaders.filter((l) => l.loadAsync);
     }
 
     async load() {
-        log.info(`Server is running in ${modeTag} mode`);
-        log.info(logStrings.initAllLoaders);
+        this.welcome();
+        this.log.info(`Running in ${modeTag} mode`);
+        this.log.info(logStrings.initAllLoaders);
 
         await this.loadSynchronous();
 
@@ -31,7 +34,7 @@ export class AppLoader extends AbstractLoader<VoidAny> {
         );
         return Promise.all(loaderPromises)
             .then(() => {
-                log.info(logStrings.doneAllLoaders);
+                this.log.info(logStrings.doneAllLoaders);
             })
             .catch(this.failed);
     }
@@ -50,5 +53,9 @@ export class AppLoader extends AbstractLoader<VoidAny> {
 
     protected inject() {
         super.inject();
+    }
+
+    private welcome() {
+        this.log.info(appLoadWelcome);
     }
 }

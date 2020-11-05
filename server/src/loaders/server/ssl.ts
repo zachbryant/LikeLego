@@ -9,8 +9,8 @@ import { getDependency } from '@utils/';
 export class SslLoader extends AbstractLoader<https.Server> {
     private app;
 
-    constructor(public port = ssl.port, loadAsync = true) {
-        super(loadAsync);
+    constructor(public port = ssl.port) {
+        super();
     }
 
     async load() {

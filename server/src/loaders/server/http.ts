@@ -8,8 +8,8 @@ import { getDependency } from '@utils/';
 export class HttpLoader extends AbstractLoader<http.Server> {
     private app;
 
-    constructor(public port = httpPort, loadAsync = true) {
-        super(loadAsync);
+    constructor(public port = httpPort) {
+        super();
     }
 
     load(): Promise<http.Server> {

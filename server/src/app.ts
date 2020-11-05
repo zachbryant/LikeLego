@@ -1,37 +1,38 @@
 import 'reflect-metadata'; // before any other dependency
 
 import { enableHTTP, enableSSL } from '@config';
+import { modeTag } from '@config/';
 import { AbstractLoader } from '@interfaces/loader';
-import { DependencyInjectorLoaders, ServerLoaders } from '@loaders/';
+import { DependencyInjectorLoaders, JobsLoaders, ServerLoaders } from '@loaders/';
 import { AppLoader } from '@loaders/app';
 import { emitter } from '@loaders/events';
-import { winston as log } from '@loaders/logger';
-import { eventsDIKey, loggerDIKey } from '@strings/keys';
+import { default as defaultLogger } from '@loaders/logger';
+import { eventsDIKey, loggerDIKey, zalgoOnEventKey } from '@strings/keys';
+import { appLoadWelcome, initAllLoaders } from '@strings/logging';
+
+function welcome() {
+    defaultLogger.info(appLoadWelcome);
+    defaultLogger.info(`Running in ${modeTag} mode`);
+    defaultLogger.info(initAllLoaders);
+}
 
 async function start() {
-    process.on('unhandledRejection', (error) => {
-        log.error('Unhandled promise rejection:', error);
-        console.error(error);
-    });
-    process.on('warning', (e) => log.warn(e.stack));
-
-    new AppLoader([
-        new DependencyInjectorLoaders.TypeDILoader(
-            [
-                { key: eventsDIKey, value: emitter },
-                { key: loggerDIKey, value: log },
-            ],
-            false,
-        ),
-        new ServerLoaders.ExpressLoader(false),
-        ...getHttpSSLServers(),
+    new DependencyInjectorLoaders.TypeDILoader([
+        { key: eventsDIKey, value: emitter },
+        { key: loggerDIKey, value: defaultLogger },
     ])
-        .load()
-        .then((results) => {
-            // TODO something with results?
+        .concurrently(
+            new JobsLoaders.AgendaLoader(),
+            new ServerLoaders.ExpressLoader().concurrently(
+                ...getHttpSSLServers(),
+            ),
+        )
+        .start()
+        .then(() => {
+            emitter.emit(zalgoOnEventKey);
         })
         .catch((err) => {
-            log.error(`App loader failed: \n\n${err.stack}`);
+            defaultLogger.error(`App loader failed: \n\n${err.stack}`);
         });
 }
 
@@ -42,4 +43,5 @@ function getHttpSSLServers() {
     return servers;
 }
 
+welcome();
 start();

@@ -2,6 +2,7 @@ import { Container } from 'typedi';
 
 import { AbstractLoader } from '@interfaces/loader';
 import { TypeDIDependency } from '@interfaces/typediDependency';
+import { setDependency } from '@utils/';
 
 /**
  * This is the main dependency injection loader I'm going with for the project.
@@ -14,11 +15,8 @@ import { TypeDIDependency } from '@interfaces/typediDependency';
  * to use the typeDI container.
  */
 export class TypeDILoader extends AbstractLoader {
-    constructor(
-        private deps: TypeDIDependency[],
-        public loadAsync: boolean = true,
-    ) {
-        super(loadAsync);
+    constructor(private deps: TypeDIDependency[]) {
+        super();
     }
 
     load(): Promise<void> {
@@ -29,11 +27,9 @@ export class TypeDILoader extends AbstractLoader {
         super.inject();
         return new Promise((resolve) => {
             this.deps.forEach((dependency) => {
-                Container.set(dependency.key, dependency.value);
+                setDependency(dependency.key, dependency.value);
             });
             resolve();
-        })
-            .then(() => this.done())
-            .catch(this.failed);
+        });
     }
 }

@@ -5,7 +5,8 @@ import { API } from '@api';
 import { api as configApi, hasCompression, hasCors, isDevelopment } from '@config';
 import { AbstractLoader } from '@interfaces/loader';
 import { logStrings, strings } from '@strings';
-import { serverAppDIKey } from '@strings/keys';
+import { serverAppDIKey, serverRouterDIKey } from '@strings/keys';
+import { setDependency } from '@utils/';
 
 const cors = require('cors');
 const helmet = require('helmet');
@@ -19,20 +20,25 @@ const compression = require('compression');
  * It requires an express application instance, and returns a promise.
  * When resolved, the promise makes the app instance available again.
  */
+export type ExpressServerType = express.Application;
+export type ExpressRouterType = express.Router;
 export class ExpressLoader extends AbstractLoader<express.Application> {
     private allowedOrigins = [
         process.env.HOST,
         `https://localhost:${process.env.SSL_PORT}`,
     ];
-    private app;
+    private app: ExpressServerType;
+    private router: ExpressRouterType;
 
     constructor() {
         super();
         this.app = express();
+        this.router = Router();
     }
 
     async load() {
-        Container.set(serverAppDIKey, this.app);
+        setDependency(serverAppDIKey, this.app);
+        setDependency(serverRouterDIKey, this.router);
         this.loadMiddlewares();
         this.loadRoutes();
         this.done();

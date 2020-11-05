@@ -2,11 +2,13 @@ import http from 'http';
 
 import { httpPort } from '@config/';
 import { AbstractLoader } from '@interfaces/loader';
+import { ServerAppType } from '@localtypes/injectionAliases';
 import { serverAppDIKey } from '@strings/keys';
 import { getDependency } from '@utils/';
 
-export class HttpLoader extends AbstractLoader<http.Server> {
-    private app;
+export type HttpServerType = http.Server;
+export class HttpLoader extends AbstractLoader<HttpServerType> {
+    private app: ServerAppType;
 
     constructor(public port = httpPort) {
         super();
@@ -16,14 +18,13 @@ export class HttpLoader extends AbstractLoader<http.Server> {
         return new Promise((resolve) => {
             let httpServer = http.createServer(this.app);
             httpServer.listen(this.port);
-            this.done();
             resolve(httpServer);
         });
     }
 
     protected inject() {
         super.inject();
-        this.app = getDependency(serverAppDIKey);
+        this.app = getDependency<ServerAppType>(serverAppDIKey);
     }
 
     protected done() {

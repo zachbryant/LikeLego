@@ -2,12 +2,14 @@ import https from 'https';
 
 import { ssl } from '@config/';
 import { AbstractLoader } from '@interfaces/loader';
+import { ServerAppType } from '@localtypes/injectionAliases';
 import { serverAppDIKey } from '@strings/keys';
 import { badSSLConfig } from '@strings/logging';
 import { getDependency } from '@utils/';
 
-export class SslLoader extends AbstractLoader<https.Server> {
-    private app;
+export type SslServerType = https.Server;
+export class SslLoader extends AbstractLoader<SslServerType> {
+    private app: ServerAppType;
 
     constructor(public port = ssl.port) {
         super();
@@ -18,7 +20,6 @@ export class SslLoader extends AbstractLoader<https.Server> {
         if (key && cert && passphrase) {
             let sslServer = https.createServer(ssl.credentials, this.app);
             sslServer.listen(this.port);
-            this.done();
             return sslServer;
         } else {
             return Promise.reject(badSSLConfig);
@@ -27,7 +28,7 @@ export class SslLoader extends AbstractLoader<https.Server> {
 
     protected inject() {
         super.inject();
-        this.app = getDependency(serverAppDIKey);
+        this.app = getDependency<ServerAppType>(serverAppDIKey);
     }
 
     protected done() {

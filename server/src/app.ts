@@ -1,30 +1,25 @@
 import 'reflect-metadata'; // before any other dependency
 
 import { enableHTTP, enableSSL } from '@config';
-import { modeTag } from '@config/';
 import { AbstractLoader } from '@interfaces/loader';
-import { DependencyInjectorLoaders, JobsLoaders, ServerLoaders } from '@loaders/';
+import { DatabaseLoaders, DependencyInjectorLoaders, JobsLoaders, ServerLoaders } from '@loaders/';
 import { AppLoader } from '@loaders/app';
 import { emitter } from '@loaders/events';
 import { default as defaultLogger } from '@loaders/logger';
 import { eventsDIKey, loggerDIKey, zalgoOnEventKey } from '@strings/keys';
-import { appLoadWelcome, initAllLoaders } from '@strings/logging';
-
-function welcome() {
-    defaultLogger.info(appLoadWelcome);
-    defaultLogger.info(`Running in ${modeTag} mode`);
-    defaultLogger.info(initAllLoaders);
-}
 
 async function start() {
-    new DependencyInjectorLoaders.TypeDILoader([
-        { key: eventsDIKey, value: emitter },
-        { key: loggerDIKey, value: defaultLogger },
-    ])
-        .concurrently(
-            new JobsLoaders.AgendaLoader(),
-            new ServerLoaders.ExpressLoader().concurrently(
-                ...getHttpSSLServers(),
+    new AppLoader()
+        .chainAfter(
+            new DependencyInjectorLoaders.TypeDILoader([
+                { key: eventsDIKey, value: emitter },
+                { key: loggerDIKey, value: defaultLogger },
+            ]).concurrentlyAfter(
+                new JobsLoaders.AgendaLoader(),
+                new DatabaseLoaders.KnexLoader(),
+                new ServerLoaders.ExpressLoader().concurrentlyAfter(
+                    ...getHttpSSLServers(),
+                ),
             ),
         )
         .start()
@@ -43,5 +38,4 @@ function getHttpSSLServers() {
     return servers;
 }
 
-welcome();
 start();

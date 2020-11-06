@@ -45,14 +45,14 @@ export abstract class AbstractLoader<ResultType = void> {
     /** Overridable stub for graceful shutdown handling */
     protected async stop() {}
 
-    /** Prepares loaders to be run in order once `this` has finished loading. */
-    public chain(...loaders): AbstractLoader<ResultType> {
+    /** Prepares loaders to be run in order after `this` has finished loading. */
+    public chainAfter(...loaders): AbstractLoader<ResultType> {
         loaders.forEach((_) => this.chainedLoaders.push(_));
         return this;
     }
 
-    /** Prepares loaders to be run concurrently once `this` has finished loading. */
-    public concurrently(...loaders): AbstractLoader<ResultType> {
+    /** Prepares loaders to be run concurrently after `this` has finished loading. */
+    public concurrentlyAfter(...loaders): AbstractLoader<ResultType> {
         loaders.forEach((_) => this.concurrentLoaders.push(_));
         return this;
     }

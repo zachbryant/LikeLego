@@ -51,7 +51,8 @@ The strings folder structure intends to make translation scalable, and to bring 
 For convenience during development, `injectionAliases.ts` is where the proper types corresponding to the active loaders are maintained. This has to be done manually, though, or you can just use `Any` for dependencies.
 
 ### Miscellaneous
- - `@folder` import intellisense: edit the paths in tsconfig.json, and `@types` is reserved.
+ - `@folder` import intellisense: edit the paths in tsconfig.json, and `@types` is reserved, but `@localtypes` is available.
+ - Routes and middlewares are automatically exported from `@api/`. You can prevent individual export by changing the filetype (like `.ts.deprecated`), which is `.ts` by default.
 
 ### Install
  - Mongodb

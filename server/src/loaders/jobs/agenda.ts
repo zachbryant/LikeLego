@@ -1,5 +1,4 @@
 import Agenda from 'agenda';
-import { Mongoose } from 'mongoose';
 
 import { agenda as agendaConfig } from '@config';
 import { AbstractLoader } from '@interfaces/loader';

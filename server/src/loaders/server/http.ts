@@ -29,6 +29,6 @@ export class HttpLoader extends AbstractLoader<HttpServerType> {
 
     protected done() {
         super.done();
-        this.log.info(`HTTP (insecure) is available on port ${this.port}`);
+        this.log.info(`HTTP (insecure) is LIVE on port ${this.port}`);
     }
 }

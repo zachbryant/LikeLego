@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 
-import { Routes as ApiRoutes } from '@api';
+import { Middlewares, Routes } from '@api';
 import { api as configApi, hasCompression, hasCors, isDevelopment } from '@config';
 import { AbstractLoader } from '@interfaces/loader';
 import { logStrings, strings } from '@strings';
@@ -64,14 +64,18 @@ export class ExpressLoader extends AbstractLoader<express.Application> {
             morgan(isDevelopment ? 'dev' : 'common'),
             hasCors ? cors({ origin: this.corsOriginCheck }) : undefined,
             hasCompression ? compression() : undefined,
+            ...Middlewares,
         ].filter(Boolean);
     }
 
     // Load our API and app routes using the API prefix
-    async loadRoutes() {
+    loadRoutes() {
         this.log.debug(logStrings.initRoutes);
-        for (const routeBuilderFunc of ApiRoutes) {
+        for (const routeBuilderFunc of Routes) {
             routeBuilderFunc(this.router);
+            this.log.debug(
+                `${routeBuilderFunc.name || 'Anonymous'} route ready`,
+            );
         }
         this.app.use(configApi.prefix, this.router);
         this.log.debug(logStrings.doneInitRoutes);

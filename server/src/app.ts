@@ -3,23 +3,31 @@ import 'reflect-metadata'; // before any other dependency
 import { enableHTTP, enableSSL } from '@config';
 import { AbstractLoader } from '@interfaces/loader';
 import { DatabaseLoaders, DependencyInjectorLoaders, JobsLoaders, ServerLoaders } from '@loaders/';
-import { AppLoader } from '@loaders/app';
 import { emitter } from '@loaders/events';
+import { GreeterLoader } from '@loaders/greeter';
 import { default as defaultLogger } from '@loaders/logger';
 import { eventsDIKey, loggerDIKey, zalgoOnEventKey } from '@strings/keys';
 
+import { getDependencyOrDefault } from './utils';
+
+let log = defaultLogger;
+
+async function loadDependencies() {
+    await new DependencyInjectorLoaders.TypeDILoader([
+        { key: eventsDIKey, value: emitter },
+        { key: loggerDIKey, value: defaultLogger },
+    ]).start();
+}
+
 async function start() {
-    new AppLoader()
-        .chainAfter(
-            new DependencyInjectorLoaders.TypeDILoader([
-                { key: eventsDIKey, value: emitter },
-                { key: loggerDIKey, value: defaultLogger },
-            ]).concurrentlyAfter(
-                new JobsLoaders.AgendaLoader(),
-                new DatabaseLoaders.KnexLoader(),
-                new ServerLoaders.ExpressLoader().concurrentlyAfter(
-                    ...getHttpSSLServers(),
-                ),
+    loadDependencies();
+    log = getDependencyOrDefault(loggerDIKey, defaultLogger);
+    new GreeterLoader()
+        .concurrentlyAfter(
+            new JobsLoaders.AgendaLoader(),
+            //new DatabaseLoaders.KnexLoader(),
+            new ServerLoaders.ExpressLoader().concurrentlyAfter(
+                ...getHttpSSLServers(),
             ),
         )
         .start()

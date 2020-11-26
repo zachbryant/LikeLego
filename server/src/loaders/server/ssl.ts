@@ -3,9 +3,7 @@ import https from 'https';
 import { ssl } from '@config/';
 import { AbstractLoader } from '@interfaces/loader';
 import { ServerAppType } from '@localtypes/injectionAliases';
-import { serverAppDIKey } from '@strings/keys';
 import { badSSLConfig } from '@strings/logging';
-import { getDependency } from '@utils/';
 
 export type SslServerType = https.Server;
 export class SslLoader extends AbstractLoader<SslServerType> {
@@ -26,13 +24,18 @@ export class SslLoader extends AbstractLoader<SslServerType> {
         }
     }
 
+    public async start(_prevResult: any) {
+        this.app = _prevResult as ServerAppType;
+        super.start();
+    }
+
     protected inject() {
         super.inject();
-        this.app = getDependency<ServerAppType>(serverAppDIKey);
+        //this.app = getDependency<ServerAppType>(serverAppDIKey);
     }
 
     protected done() {
         super.done();
-        this.log.info(`SSL is available on port ${this.port}`);
+        this.log.info(`SSL is LIVE on port ${this.port}`);
     }
 }

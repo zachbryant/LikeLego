@@ -1,1 +1,0 @@
-Data models and classes can be stored in here.

@@ -1,9 +1,0 @@
-# https://www.robotstxt.org/robotstxt.html
-User-agent: Googlebot
-Disallow:
-
-User-agent: Bingbot
-Disallow:
-
-User-agent: *
-Disallow: /

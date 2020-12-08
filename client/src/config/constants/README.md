@@ -1,1 +1,0 @@
-Commonly used constants can be defined in files here.

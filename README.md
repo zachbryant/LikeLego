@@ -1,4 +1,4 @@
-# Express Server Starter
+# Quickdraw Server Starter
 
 ## Architecture 
 This starter follows the 3 layer architecture ([explained](https://softwareontheroad.com/ideal-nodejs-project-structure/)):

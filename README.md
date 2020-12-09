@@ -9,6 +9,44 @@ This starter follows the 3 layer architecture ([explained](https://softwareonthe
 And additionally follows pub/sub architecture, where services emit events and handlers catch them.
 
 ## Customization
+
+### Environment
+Copy this example into your `.env` at the root of the project.
+```python
+HOST=0.0.0.0
+SSL_PORT=8443
+SSL_PASS=mypassword
+PORT=8080
+
+DB_HOST=
+DB_USER=
+DB_PASS=
+
+MAIL_HOST=
+MAIL_USER=
+MAIL_PASS=
+
+JWT_SECRET=
+
+AGENDA_CONCURRENCY=20
+AGENDA_POOL_TIME=one minute
+AGENDA_MONGO_URL=localhost:27018
+AGENDA_DB_COLLECTION=agendaJobs
+AGENDA_USER=admin
+AGENDA_PASS=pass
+
+BODY_PARSE_SIZE_LIMIT=50mb
+
+API_PREFIX=/api
+
+COMPRESION=false
+CORS=true
+HTTP=false
+
+LOG_LEVEL_DEV=silly
+LOG_LEVEL_PROD=info
+LOG_PATH=logs
+```
 ### API
 
 ### Dependency Injection (DI)

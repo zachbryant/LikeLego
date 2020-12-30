@@ -8,7 +8,7 @@ This starter follows the 3 layer architecture ([explained](https://softwareonthe
 
 And additionally follows pub/sub architecture, where services emit events and handlers catch them.
 
-## Customization
+## Development & Customization
 
 ### Environment
 Copy this example into your `.env` at the root of the project.
@@ -94,39 +94,3 @@ For convenience during development, `injectionAliases.ts` is where the proper ty
 
 ### Install
  - Mongodb
-
-
-### TODO
- - generate tsconfig.json
- - jobs
- - services
- - subscribers
- - types
- - testing
- - Admin dashboard
-  - status monitor (cpu, ram, load avg, resp time, rq per sec, status code graph, failed requests, highlighted log output, disable events)
- - packages
-  - fakerjs
-  - jest/mocha
-  - just
-  - feathers/hapi/restify/koa
-  - pino
-  - logging-library
-  - node-cron
-  - bull
-  - agenda
-  - mailgun/nodemailer/emailjs
-  - knex/sequelize/mongoose
-  - commanderjs
-  - upash
-  - bluebird
-  - micro/seneca
-  - sparkly
-  - conf
-  - ora
-  - storyboard (logging ui)
-  - stackman
-  - leakage
-  - rate-limiter-flexible
-  - apicache
-  - inversify
